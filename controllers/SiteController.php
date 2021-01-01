@@ -7,8 +7,10 @@ use yii\filters\AccessControl;
 use yii\web\Controller;
 use yii\web\Response;
 use yii\filters\VerbFilter;
+
 use app\models\LoginForm;
 use app\models\ContactForm;
+use app\models\EntryForm;
 
 class SiteController extends Controller
 {
@@ -124,5 +126,22 @@ class SiteController extends Controller
     public function actionAbout()
     {
         return $this->render('about');
+    }
+
+    public function actionSay()
+    {
+        return $this->render('say', ['message' => 'Hello World']);
+    }
+
+    public function actionEntry()
+    {
+        $model = new EntryForm();
+        // jika method post/ data ditambahkan
+        if ($model->load(Yii::$app->request->post())) {
+            // proses data validari
+            return $this->render('entry-confirm', ['model' => $model]);
+        } else { // jika method bukan post maka akan render view ini/ form salah
+            return $this->render('entry', ['model' => $model]);
+        }
     }
 }
